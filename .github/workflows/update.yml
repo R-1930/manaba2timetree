@@ -1,0 +1,35 @@
+name: Update manaba assignments ICS
+
+on:
+  schedule:
+    - cron: "0 21 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  update-ics:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install requests beautifulsoup4
+
+      - name: Run scraper
+        env:
+          MANABA_USER_ID: ${{ secrets.MANABA_USER_ID }}
+          MANABA_PASSWORD: ${{ secrets.MANABA_PASSWORD }}
+          OUTPUT_ICS_PATH: docs/assignments.ics
+        run: |
+          mkdir -p docs
+          python scraper.py
+
+      - name: Commit updated ICS
+        run: |
+          git config user.name
