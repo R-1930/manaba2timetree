@@ -245,7 +245,7 @@ def build_ics(assignments):
         start = a["due"] - datetime.timedelta(minutes=30)
         end = a["due"]
         uid = uuid.uuid5(uuid.NAMESPACE_URL, f"{a['course']}-{a['title']}-{a['due']}")
-        summary = f"【締切】{a['course']} - {a['title']}".strip(" -")
+        summary = f"{a['course']} - {a['title']}".strip(" -")
         lines += [
             "BEGIN:VEVENT",
             f"UID:{uid}@manaba2timetree",
